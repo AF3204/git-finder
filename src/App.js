@@ -5,7 +5,8 @@ import NavBar from './components/layout/NavBar.js'
 import Users from './components/users/Users';
 import Search from './components/users/Search';
 import Alert from './components/layout/Alert';
-import About from './components/pages/About.js'
+import About from './components/pages/About.js';
+import User from './components/users/User.js';
 import axios from 'axios';
 
 // We are now using a class method
@@ -17,8 +18,12 @@ class App extends Component{
    * 3. Fragments is the used to just display the content without the classname
    * 4. Now on ComponentDidMount and Lesson 14
    * */ 
+  // user is an object
+  // users is an array
   state={
     users:[],
+    user:{},
+    repos:[],
     loading: false,
     alert: null
   }
@@ -46,7 +51,7 @@ class App extends Component{
   //  Serching the users.
   //  This is the endpoint
   searchUser = async text =>{
-    // console.log(text);
+    // console.log(text); 
     this.setState({users:[],loading: true});
     if(text.length > 1){
       const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=
@@ -59,6 +64,33 @@ class App extends Component{
       this.setState({users:[], loading: false})
     }
   }
+
+  // Get single Github user
+  getUser = async (username)=>{
+    this.setState({loading: true});
+    
+    const res = await axios.get(`https://api.github.com/users/${username}?client_id=
+    ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+    ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+    
+
+    // Once the axios comes back with a response, it will update the new users 
+    this.setState({user:res.data, loading: false})
+  };
+
+  // Lesson 24: Get user Repos
+  // Get single Github user
+  getUserRepos = async (username)=>{
+    this.setState({loading: true});
+    
+    const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=
+    ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+    ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+    
+
+    // Once the axios comes back with a response, it will update the new users 
+    this.setState({repos:res.data, loading: false})
+  };
 
   // Clear States
   // Since it is single, no need curly bracket
@@ -110,7 +142,8 @@ class App extends Component{
   // 10. Components, Props & PropTypes
   
   render(){
-    const {users, loading} = this.state;
+    const {users, loading, user,repos} = this.state;
+    
     return(
       // Lesson 21: Route and Router
       <Router>
@@ -122,6 +155,7 @@ class App extends Component{
             {/* Alert statement above */}
             <Alert alert={this.state.alert}/>
             <Switch>
+              {/* The first page aka the main page */}
               <Route exact path='/' render={props=>(
                 <Fragment>
                   <Search 
@@ -130,19 +164,35 @@ class App extends Component{
                     showClear={users.length > 0 ? true:false}
                     setAlert={this.setAlert}
                   />
+                  <Users loading={loading} users={users}/>
                 </Fragment>
-              )}></Route>
+              )} />
+              {/* Creating the second Route aka the second page */}
+              <Route exact path='/about' component={
+                About
+              } />
+              {/* Using props here, because we have things to pass in. 
+                  About is a component, so we can use the component element */}
+              {/* Spread operators will iterate through the array */}
+              {/* Login will be passed to know the users */}
+              <Route exact path='/user/:login' render={props=>(
+                <User {...props}
+                  getUser={this.getUser}
+                  getUserRepos={this.getUserRepos}
+                  user={user}
+                  repos={repos}
+                  loading={loading}/>
+                )} />
             </Switch>
             {/* You must always put in the eclared functions/props for it to work */}
-            {/* Lesson 21: Moving this to the fragment */}
+            {/* Lesson 21: Moving Search and Users to the fragment */}
             {/* <Search 
               searchUser={this.searchUser}
               clearUsers={this.clearUsers}
               showClear={users.length > 0 ? true:false}
               setAlert={this.setAlert}
             /> */}
-
-            <Users loading={loading} users={users}/>
+            {/* <Users loading={loading} users={users}/> */}
           </div>
         </div>
       </Router>

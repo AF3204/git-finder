@@ -1,6 +1,10 @@
 // import React, { Component } from 'react'
 import React from 'react'
 import PropTypes from 'prop-types'
+/* You use curly braces if you need a certain item.
+ Else, you want the default aka everything, use the normal 
+ default */
+import {Link} from 'react-router-dom'
 
 // Lesson 12: THe original class code
 // class NavBar extends Component {
@@ -38,6 +42,19 @@ const NavBar = ({icon,title}) => {
       <h2>
         <i className={icon} alt="github" /> {title}
       </h2>
+      <ul>
+        <li> <Link to='/'> Main </Link> </li>
+        <li> <Link to='/about'> About </Link> </li>
+        {/* This method allows you to go to the other pages, but it refreshes. 
+        Hence, any searches and/or changes made in the previous page will be erased. 
+        Therefore, we're gonna use Link that solves this issue */}
+        {/* <li>
+          <a href="/"> main</a>
+        </li>
+        <li>
+          <a href="/about">about</a>
+        </li> */}
+      </ul>
     </nav>
   )
 }

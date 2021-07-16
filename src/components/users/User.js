@@ -2,29 +2,38 @@
  * For lesson 24: We will be doing prop drilling where we drill into a particular
  * component when we insert into another JS file
  * */ 
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, useEffect } from 'react'
 import Spinner from '../layout/Spinner'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import Repos from '../repos/Repos'
 
-export class User extends Component {
+/**
+ * 2021-07-21: Section 5
+ * Refactoring from Class to Component for Hook
+ */
 
-    componentDidMount() {
-        this.props.getUser(this.props.match.params.login )
-        // Added props for UserRepos
-        this.props.getUserRepos(this.props.match.params.login)
-    }
+// 20210716: Converting to component
+// Instead of props, we can destructuring a little
+// 20210716: If main: (props)
+// 20210716: If destructuring: ({user})
+// 20210716: Can eliminate the this.props
+const User = ({user, loading, repos, getUser, getUserRepos, match}) =>{
 
-    static propTypes = {
-        loading: PropTypes.bool,
-        user: PropTypes.object.isRequired,
-        getUser: PropTypes.func.isRequired,
-        getUserRepos: PropTypes.func.isRequired,
-        repos: PropTypes.array.isRequired,
-    }
+    // 20210716: We will be replacing this with useEffect
+    // componentDidMount() {
+    //     this.props.getUser(this.props.match.params.login )
+    //     // Added props for UserRepos
+    //     this.props.getUserRepos(this.props.match.params.login)
+    // }
+    // 20210716:UseEffect gets the updated value if there is any change
+    // 20210716:  [] if for all. You can specify it
+    useEffect(() => {
+        getUser(match.params.login);
+        getUserRepos(match.params.login);
+    }, [])
 
-    render() {
+    // render() {
         const {
             name, 
             avatar_url,
@@ -37,12 +46,11 @@ export class User extends Component {
             blog,
             login,
             followers,
-        } = this.props.user;
-        const {loading, repos} = this.props;
+        } = user;
+
+        // const {loading, repos} = this.props;
         
         if (loading === true) return <Spinner />;
-        
-        console.log(repos);
 
         return <Fragment>
             <Link to={'/'} className='btn btn-light'>
@@ -95,12 +103,16 @@ export class User extends Component {
                                 <strong>Blog:</strong> {blog}
                             </Fragment>}
                         </li>
+                        <li>
+                            <strong>URL:</strong> {html_url}
+                        </li>
+                        <li>
+                            <strong>Repos:</strong> {public_repos}
+                        </li>
                     </ul>
                 </div>
                 {/* Making a checkbox */}
                 
-                URL: {html_url}
-                Repos: {public_repos}
 
                 <div className='card text-center'>
                     <div className='badge badge-success'>Followers: {followers}</div>
@@ -111,7 +123,15 @@ export class User extends Component {
             <Repos repos={repos} />
         </Fragment>
             
-    }
+    // }
+}
+
+User.propTypes = {
+    loading: PropTypes.bool,
+    user: PropTypes.object.isRequired,
+    getUser: PropTypes.func.isRequired,
+    getUserRepos: PropTypes.func.isRequired,
+    repos: PropTypes.array.isRequired,
 }
 
 export default User

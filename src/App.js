@@ -9,6 +9,7 @@ import About from './components/pages/About.js';
 import User from './components/users/User.js';
 import axios from 'axios';
 
+import githubState from './context/github/githubState'
 /**
  * 2021-07-21: Section 5
  * Refactoring from Class to Component for useState
@@ -190,7 +191,8 @@ const App = () =>{
 
   return(
     // Lesson 21: Route and Router
-    <Router>
+    <githubState>
+      <Router>
       <div className="App">
         {/* Send the title for the component */}
         <NavBar title="Github Finder" icon='fab fa-github'/>
@@ -242,6 +244,7 @@ const App = () =>{
         </div>
       </div>
     </Router>
+    </githubState>
   )
   // }
 

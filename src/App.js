@@ -9,7 +9,7 @@ import About from './components/pages/About.js';
 import User from './components/users/User.js';
 import axios from 'axios';
 
-import githubState from './context/github/githubState'
+import GithubState from './context/github/githubState'
 /**
  * 2021-07-21: Section 5
  * Refactoring from Class to Component for useState
@@ -64,35 +64,36 @@ const App = () =>{
   // 2. If you search, this will display the new ones
   //  Serching the users.
   //  This is the endpoint
-  const searchUser = async text =>{
+  // 20210717: Will be using useReducer
+  // const searchUser = async text =>{
     
-    // 2021-07-21: Change to setLoading
-    // this.setState({users:[],loading: true});
-    setLoading(true);
-    // if(text.length > 1){
-    //   const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=
-    //     ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
-    //     ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+  //   // 2021-07-21: Change to setLoading
+  //   // this.setState({users:[],loading: true});
+  //   setLoading(true);
+  //   // if(text.length > 1){
+  //   //   const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=
+  //   //     ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+  //   //     ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
         
-    //     // Once the axios comes back with a response, it will update the new users 
-    //     // this.setState({users:res.data.items, loading: false})
+  //   //     // Once the axios comes back with a response, it will update the new users 
+  //   //     // this.setState({users:res.data.items, loading: false})
         
-    //     setUser(res.data.items)
-    //     setLoading(false);
-    // }else{
-    //   setUser([])
-    //   setLoading(false);
-    // }
-    const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=
-        ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
-        ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+  //   //     setUser(res.data.items)
+  //   //     setLoading(false);
+  //   // }else{
+  //   //   setUser([])
+  //   //   setLoading(false);
+  //   // }
+  //   const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=
+  //       ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+  //       ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
         
-    // Once the axios comes back with a response, it will update the new users 
-    // this.setState({users:res.data.items, loading: false})
+  //   // Once the axios comes back with a response, it will update the new users 
+  //   // this.setState({users:res.data.items, loading: false})
     
-    setUsers(res.data.items)
-    setLoading(false);
-  }
+  //   setUsers(res.data.items)
+  //   setLoading(false);
+  // }
 
   // Get single Github user
   
@@ -191,7 +192,7 @@ const App = () =>{
 
   return(
     // Lesson 21: Route and Router
-    <githubState>
+    <GithubState>
       <Router>
       <div className="App">
         {/* Send the title for the component */}
@@ -207,7 +208,6 @@ const App = () =>{
             <Route exact path='/' render={props=>(
               <Fragment>
                 <Search 
-                  searchUser={searchUser}
                   clearUsers={clearUsers}
                   showClear={users.length > 0 ? true:false}
                   setAlert={showAlert}
@@ -244,7 +244,7 @@ const App = () =>{
         </div>
       </div>
     </Router>
-    </githubState>
+    </GithubState>
   )
   // }
 

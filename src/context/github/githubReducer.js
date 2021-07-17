@@ -1,40 +1,29 @@
-/**
- * 20210716: Where all the reduced codes will be done here
- */
-
-import React, {useReducer} from 'react';
-import axios from 'axios';
-import githubContext from './githubContext';
-import GithubReducer from './GithubState';
-
 import {
-    SEARCH_USERS,
+    SEARCH_USER,
     SET_LOADING,
     CLEAR_USERS,
-    GER_USER,
-    GER_REPOS
+    GET_USER,
+    GET_REPOS
 } from '../types.js'
 
-const GithubState = props => {
-    // Global values
-    const initialState = {
-        users:{},
-        user:{},
-        repos:[],
-        loading: false
+// Reducer takes in state and action
+export default (state, action)=>{
+    switch (action.type){
+        case SET_LOADING:
+            // Default is FALSE. Return TRUE
+            return {
+                ...state,
+                loading: true
+            }
+        case SEARCH_USER:
+            // Include the loading into here as well
+            return{
+                ...state,
+                users:action.payload,
+                loading: false
+            }
+        
+        default:
+            return state;
     }
-
-    const [state, dispatch] = useReducer(GithubReducer, initialState, init)
-
-    return <githubContext.Provider
-        value={{
-            users: state.users,
-            user: state.user,
-            repos: repos.repos,
-            loading:state.loading
-        }}
-    >
-        {props.children}
-
-    </githubContext.Provider>
 }

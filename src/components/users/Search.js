@@ -1,6 +1,7 @@
 // import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import GithubContext  from '../../context/github/githubContext';
 
 /**
  * 2021-07-21: Section 5
@@ -10,8 +11,10 @@ import React, { useState } from 'react'
 // 20210716: Converting to component
 // export class Search extends Component {
 // const {showClear, clearUsers} = this.props -> now pushed to here: (props)
-const Search = ({searchUser, showClear, clearUsers,setAlert}) => {
+const Search = ({showClear, clearUsers,setAlert}) => {
     
+    // 20210717: Initialise the context here
+    const { searchUser} = useContext(GithubContext)
     // 20210716: We destructure the text to be used by useState
     const [text, setText] = useState('')
 
@@ -89,7 +92,6 @@ const Search = ({searchUser, showClear, clearUsers,setAlert}) => {
 }
 
 Search.propTypes={
-        searchUser: PropTypes.func.isRequired,
         clearUsers: PropTypes.func.isRequired,
         showClear: PropTypes.bool.isRequired,
 };

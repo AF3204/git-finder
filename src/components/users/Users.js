@@ -1,8 +1,17 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import UserItem from './UserItem'
 import Spinner from '../layout/Spinner'
+import GithubContext from '../../context/github/githubContext.js'
 
-const Users=({users, loading})=>{
+// const Users=({users, loading})=>{ -> Removing the props
+const Users=()=>{
+
+    // 20210721: initialising with useContext
+    const githubContext = useContext(GithubContext)
+    
+    // 20210721: Destructuring the githubContext
+    const {users, loading} = githubContext
+
     if(loading){
         return <Spinner/>
     }else{

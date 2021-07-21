@@ -2,11 +2,12 @@
  * For lesson 24: We will be doing prop drilling where we drill into a particular
  * component when we insert into another JS file
  * */ 
-import React, { Component, Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useContext } from 'react'
 import Spinner from '../layout/Spinner'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import Repos from '../repos/Repos'
+import GithubContext from '../../context/github/githubContext.js'
 
 /**
  * 2021-07-21: Section 5
@@ -18,7 +19,11 @@ import Repos from '../repos/Repos'
 // 20210716: If main: (props)
 // 20210716: If destructuring: ({user})
 // 20210716: Can eliminate the this.props
-const User = ({user, loading, repos, getUser, getUserRepos, match}) =>{
+const User = ({repos, getUserRepos, match}) =>{
+    const githubContext = useContext(GithubContext)
+    
+    // user, loading and getUser no longer from props
+    const {loading,user,getUser} = githubContext
 
     // 20210716: We will be replacing this with useEffect
     // componentDidMount() {
@@ -126,10 +131,11 @@ const User = ({user, loading, repos, getUser, getUserRepos, match}) =>{
     // }
 }
 
+// 20210721 - Removing the props that is being used in the Context
 User.propTypes = {
-    loading: PropTypes.bool,
-    user: PropTypes.object.isRequired,
-    getUser: PropTypes.func.isRequired,
+    // loading: PropTypes.bool,
+    // user: PropTypes.object.isRequired,
+    // getUser: PropTypes.func.isRequired,
     getUserRepos: PropTypes.func.isRequired,
     repos: PropTypes.array.isRequired,
 }

@@ -23,7 +23,7 @@ import {
 const GithubState = props => {
     // Global values
     const initialState = {
-        users:{},
+        users:[],
         user:{},
         repos:[],
         loading: false
@@ -53,10 +53,19 @@ const searchUser = async text =>{
 }
 
 // Get User
+const getUser = async (username)=>{
+    
+    const res = await axios.get(`https://api.github.com/users/${username}?client_id=
+    ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+    ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+    
+    // Dispatching with payload
+    dispatch({type:GET_USER, payload:res.data})
+  };
 
 // Get Repos
 
-// Clear Users
+// Clear Users -> Using dispatch
 const clearUsers = () => dispatch({ type: CLEAR_USERS })
 
 // Set Loading -> Using dispatch to send the content
@@ -69,7 +78,8 @@ const setLoading = () =>dispatch({type: SET_LOADING})
             repos: state.repos,
             loading:state.loading,
             clearUsers,
-            searchUser
+            searchUser,
+            getUser
         }}
     >
         {props.children}

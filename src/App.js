@@ -19,8 +19,9 @@ import GithubState from './context/github/githubState'
 const App = () =>{
 
   // 2021-07-21: Initialising the useState.
-  let [users, setUsers] = useState([])
-  let [user, setUser] = useState([])
+  // 20210721: Remove setUsers
+  // let [users, setUsers] = useState([])
+  // let [user, setUser] = useState([])
   let [repos, setRepos] = useState([])
   let [loading, setLoading] = useState(false)
   let [alert, setAlert] = useState(null)
@@ -96,23 +97,22 @@ const App = () =>{
   // }
 
   // Get single Github user
-  
-  const getUser = async (username)=>{
+  // 20210721: Moving this to state
+  // const getUser = async (username)=>{
     
-    setLoading(true);
+  //   setLoading(true);
     
-    const res = await axios.get(`https://api.github.com/users/${username}?client_id=
-    ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
-    ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+  //   const res = await axios.get(`https://api.github.com/users/${username}?client_id=
+  //   ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+  //   ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
     
 
-    // Once the axios comes back with a response, it will update the new users 
-    setUser(res.data)
+  //   // Once the axios comes back with a response, it will update the new users 
+  //   setUser(res.data)
 
-    console.log(username);
 
-    setLoading(false)
-  };
+  //   setLoading(false)
+  // };
 
   // Lesson 24: Get user Repos
   // Get single Github user
@@ -133,12 +133,13 @@ const App = () =>{
 
   // Clear States
   // Since it is single, no need curly bracket
-  const clearUsers = () => {
+  // 20210721 - Remove the clearUsers and showClear
+  // const clearUsers = () => {
     
-    // this.setState(({users:[], loading: false}))
-    setUser([])
-    setLoading(false)
-  }
+  //   // this.setState(({users:[], loading: false}))
+  //   setUser([])
+  //   setLoading(false)
+  // }
 
   // Set Alert
   const showAlert= (msg,type)=>{
@@ -207,12 +208,13 @@ const App = () =>{
             {/* The first page aka the main page */}
             <Route exact path='/' render={props=>(
               <Fragment>
+                {/* 20210721 - Remove the clearUsers and showClear */}
                 <Search 
-                  clearUsers={clearUsers}
-                  showClear={users.length > 0 ? true:false}
+                  // clearUsers={clearUsers}
+                  // showClear={users.length > 0 ? true:false}
                   setAlert={showAlert}
                 />
-                <Users loading={loading} users={users}/>
+                <Users/>
               </Fragment>
             )} />
             {/* Creating the second Route aka the second page */}
@@ -224,12 +226,12 @@ const App = () =>{
             {/* Spread operators will iterate through the array */}
             {/* Login will be passed to know the users */}
             <Route exact path='/user/:login' render={props=>(
+              // 20210721: getUser and user is from Context
               <User {...props}
-                getUser={getUser}
+                // getUser={getUser}
+                // user={user}
                 getUserRepos={getUserRepos}
-                user={user}
-                repos={repos}
-                loading={loading}/>
+                repos={repos}/>
               )} />
           </Switch>
           {/* You must always put in the eclared functions/props for it to work */}

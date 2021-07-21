@@ -11,10 +11,13 @@ import GithubContext  from '../../context/github/githubContext';
 // 20210716: Converting to component
 // export class Search extends Component {
 // const {showClear, clearUsers} = this.props -> now pushed to here: (props)
-const Search = ({showClear, clearUsers,setAlert}) => {
+
+// 20210721: Removing showClear and clearUsers
+const Search = ({setAlert}) => {
     
     // 20210717: Initialise the context here
-    const { searchUser} = useContext(GithubContext)
+    // const { searchUser} = useContext(GithubContext)
+    const githubContext = useContext(GithubContext)
     // 20210716: We destructure the text to be used by useState
     const [text, setText] = useState('')
 
@@ -39,7 +42,7 @@ const Search = ({showClear, clearUsers,setAlert}) => {
         if(text === ''){
             setAlert(' Please Enter Text', 'light');
         }else{
-            searchUser(text);
+            githubContext.searchUser(text);
             // this.setState({text: '',})}
             setText('')
         }
@@ -82,18 +85,19 @@ const Search = ({showClear, clearUsers,setAlert}) => {
                         className='btn btn-dark btn-block'
                     />
                 </form>
-                {showClear && 
+                {githubContext.users.length > 0 && 
                 (<button 
                     className='btn btn-block'
-                    onClick={clearUsers}> Clear</button>)
+                    onClick={githubContext.clearUsers}> Clear</button>)
                 }
             </div>
         )
 }
 
-Search.propTypes={
-        clearUsers: PropTypes.func.isRequired,
-        showClear: PropTypes.bool.isRequired,
-};
+// 20210721: Remove all props since the Reducer/Context is using
+// Search.propTypes={
+//         clearUsers: PropTypes.func.isRequired,
+//         showClear: PropTypes.bool.isRequired,
+// };
 
 export default Search

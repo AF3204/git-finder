@@ -1,12 +1,18 @@
-import React, {Fragment, useState} from 'react'
+// import React, {Fragment, useState} from 'react'
+import React from 'react'
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import NavBar from './components/layout/NavBar.js'
-import Users from './components/users/Users';
-import Search from './components/users/Search';
+// 20210721: Putting it into Home.js
+// import Search from './components/users/Search';
+// import Users from './components/users/Users';
+import Home from './components/pages/Home'
+import NotFound from './components/pages/NotFound'
+import User from './components/users/User.js';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About.js';
-import User from './components/users/User.js';
+
+
 // import axios from 'axios';
 
 import GithubState from './context/github/githubState.js'
@@ -209,18 +215,22 @@ const App = () =>{
               <Alert/>
               <Switch>
                 {/* The first page aka the main page */}
-                <Route exact path='/' render={props=>(
-                  <Fragment>
-                    {/* 20210721 - Remove the clearUsers and showClear */}
-                    {/* 20210721 - Remove showAlert */}
-                    <Search 
-                      // clearUsers={clearUsers}
-                      // showClear={users.length > 0 ? true:false}
-                      // setAlert={showAlert}
-                    />
-                    <Users/>
-                  </Fragment>
-                )} />
+                <Route exact path='/' 
+                  // 20210721: Remove the render and replace with component
+                  component={Home} 
+                  // render={props=>(
+                  // <Fragment>
+                  //   {/* 20210721 - Remove the clearUsers and showClear */}
+                  //   {/* 20210721 - Remove showAlert */}
+                  //   <Search 
+                  //     // clearUsers={clearUsers}
+                  //     // showClear={users.length > 0 ? true:false}
+                  //     // setAlert={showAlert}
+                  //   />
+                  //   <Users/>
+                  // </Fragment>
+                  // )} 
+                />
                 {/* Creating the second Route aka the second page */}
                 <Route exact path='/about' component={About} />
                 {/* Using props here, because we have things to pass in. 
@@ -238,7 +248,7 @@ const App = () =>{
                   )} /> */}
                   {/* Since we removed everything: Just use component only */}
                   <Route exact path='/user/:login' component={User} />
-
+                  <Route component={NotFound}/>
               </Switch>
               {/* You must always put in the eclared functions/props for it to work */}
               {/* Lesson 21: Moving Search and Users to the fragment */}

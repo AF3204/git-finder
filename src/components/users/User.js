@@ -4,7 +4,7 @@
  * */ 
 import React, { Fragment, useEffect, useContext } from 'react'
 import Spinner from '../layout/Spinner'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import Repos from '../repos/Repos'
 import GithubContext from '../../context/github/githubContext.js'
@@ -19,11 +19,11 @@ import GithubContext from '../../context/github/githubContext.js'
 // 20210716: If main: (props)
 // 20210716: If destructuring: ({user})
 // 20210716: Can eliminate the this.props
-const User = ({repos, getUserRepos, match}) =>{
+const User = ({match}) =>{
     const githubContext = useContext(GithubContext)
     
-    // user, loading and getUser no longer from props
-    const {loading,user,getUser} = githubContext
+    // user, loading,repos, getUserRepos,  and getUser no longer from props
+    const {loading,user,repos, getUser, getUserRepos } = githubContext
 
     // 20210716: We will be replacing this with useEffect
     // componentDidMount() {
@@ -132,12 +132,12 @@ const User = ({repos, getUserRepos, match}) =>{
 }
 
 // 20210721 - Removing the props that is being used in the Context
-User.propTypes = {
-    // loading: PropTypes.bool,
-    // user: PropTypes.object.isRequired,
-    // getUser: PropTypes.func.isRequired,
-    getUserRepos: PropTypes.func.isRequired,
-    repos: PropTypes.array.isRequired,
-}
+// User.propTypes = {
+//     // loading: PropTypes.bool,
+//     // user: PropTypes.object.isRequired,
+//     // getUser: PropTypes.func.isRequired,
+//     getUserRepos: PropTypes.func.isRequired,
+//     repos: PropTypes.array.isRequired,
+// }
 
 export default User

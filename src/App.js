@@ -7,7 +7,7 @@ import Search from './components/users/Search';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About.js';
 import User from './components/users/User.js';
-import axios from 'axios';
+// import axios from 'axios';
 
 import GithubState from './context/github/githubState'
 /**
@@ -22,8 +22,8 @@ const App = () =>{
   // 20210721: Remove setUsers
   // let [users, setUsers] = useState([])
   // let [user, setUser] = useState([])
-  let [repos, setRepos] = useState([])
-  let [loading, setLoading] = useState(false)
+  // let [repos, setRepos] = useState([])
+  // let [loading, setLoading] = useState(false)
   let [alert, setAlert] = useState(null)
 
   /**
@@ -116,20 +116,20 @@ const App = () =>{
 
   // Lesson 24: Get user Repos
   // Get single Github user
-  const getUserRepos = async (username)=>{
-    setLoading(true)
+  // const getUserRepos = async (username)=>{
+  //   setLoading(true)
     
-    const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=
-    ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
-    ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+  //   const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=
+  //   ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+  //   ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
     
 
-    // Once the axios comes back with a response, it will update the new users 
-    // 20210716: Change to new
-    // this.setState({repos:res.data, loading: false})
-    setRepos(res.data)
-    setLoading(false)
-  };
+  //   // Once the axios comes back with a response, it will update the new users 
+  //   // 20210716: Change to new
+  //   // this.setState({repos:res.data, loading: false})
+  //   setRepos(res.data)
+  //   setLoading(false)
+  // };
 
   // Clear States
   // Since it is single, no need curly bracket
@@ -225,14 +225,18 @@ const App = () =>{
                 About is a component, so we can use the component element */}
             {/* Spread operators will iterate through the array */}
             {/* Login will be passed to know the users */}
-            <Route exact path='/user/:login' render={props=>(
+            {/* <Route exact path='/user/:login' render={props=>(
               // 20210721: getUser and user is from Context
               <User {...props}
                 // getUser={getUser}
                 // user={user}
-                getUserRepos={getUserRepos}
-                repos={repos}/>
-              )} />
+                // getUserRepos={getUserRepos}
+                // repos={repos}
+              />
+              )} /> */}
+              {/* Since we removed everything: Just use component only */}
+              <Route exact path='/user/:login' component={User} />
+
           </Switch>
           {/* You must always put in the eclared functions/props for it to work */}
           {/* Lesson 21: Moving Search and Users to the fragment */}

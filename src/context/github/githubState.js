@@ -38,53 +38,67 @@ const GithubState = props => {
 
     const [state, dispatch] = useReducer(githubReducer, initialState)
 
-// Search Users
-const searchUser = async text =>{
-    setLoading();
-    const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=
+    // Search Users
+    const searchUser = async text =>{
+        setLoading();
+        const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=
+            ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+            ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+        
+        // Dispatching the type and the payload
+        dispatch({
+            type: SEARCH_USER,
+            payload:res.data.items
+        })
+    };
+
+    // Get User
+    const getUser = async (username)=>{
+        
+        const res = await axios.get(`https://api.github.com/users/${username}?client_id=
         ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
         ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
-    
-    // Dispatching the type and the payload
-    dispatch({
-        type: SEARCH_USER,
-        payload:res.data.items
-    })
-}
+        
+        // Dispatching with payload
+        dispatch({type:GET_USER, payload:res.data})
+    };
 
-// Get User
-const getUser = async (username)=>{
-    
-    const res = await axios.get(`https://api.github.com/users/${username}?client_id=
-    ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
-    ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
-    
-    // Dispatching with payload
-    dispatch({type:GET_USER, payload:res.data})
-  };
+    // Get Repos
+    // 20210721: Initialising the Repos
+    const getUserRepos = async (username)=>{
+        setLoading()
+        const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=
+        ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+        ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+        
+        // Once the axios comes back with a response, it will update the new users 
+        // 20210716: Change to new
+        // this.setState({repos:res.data, loading: false})
+        // setRepos(res.data)
+        // setLoading(false)
+        dispatch({type:GET_REPOS, payload:res.data})
+    };
 
-// Get Repos
+    // Clear Users -> Using dispatch
+    const clearUsers = () => dispatch({ type: CLEAR_USERS })
 
-// Clear Users -> Using dispatch
-const clearUsers = () => dispatch({ type: CLEAR_USERS })
+    // Set Loading -> Using dispatch to send the content
+    const setLoading = () =>dispatch({type: SET_LOADING})
+        return <GithubContext.Provider
+            value={{
+                users: state.users,
+                user: state.user,
+                repos: state.repos,
+                loading:state.loading,
+                clearUsers,
+                searchUser,
+                getUser,
+                getUserRepos
+            }}
+        >
+            {props.children}
 
-// Set Loading -> Using dispatch to send the content
-const setLoading = () =>dispatch({type: SET_LOADING})
-
-    return <GithubContext.Provider
-        value={{
-            users: state.users,
-            user: state.user,
-            repos: state.repos,
-            loading:state.loading,
-            clearUsers,
-            searchUser,
-            getUser
-        }}
-    >
-        {props.children}
-
-    </GithubContext.Provider>
+        </GithubContext.Provider>
 }
 
 export default GithubState;

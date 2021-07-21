@@ -84,21 +84,23 @@ const GithubState = props => {
 
     // Set Loading -> Using dispatch to send the content
     const setLoading = () =>dispatch({type: SET_LOADING})
-        return <GithubContext.Provider
-            value={{
-                users: state.users,
-                user: state.user,
-                repos: state.repos,
-                loading:state.loading,
-                clearUsers,
-                searchUser,
-                getUser,
-                getUserRepos
-            }}
-        >
-            {props.children}
+    
+    // Return the values
+    return <GithubContext.Provider
+        value={{
+            users: state.users,
+            user: state.user,
+            repos: state.repos,
+            loading:state.loading,
+            clearUsers,
+            searchUser,
+            getUser,
+            getUserRepos
+        }}
+    >
+        {props.children}
 
-        </GithubContext.Provider>
+    </GithubContext.Provider>
 }
 
 export default GithubState;

@@ -1,7 +1,8 @@
 // import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import React, { useState, useContext } from 'react'
-import GithubContext  from '../../context/github/githubContext';
+import GithubContext  from '../../context/github/githubContext.js';
+import AlertContext  from '../../context/alert/alertContext.js';
 
 /**
  * 2021-07-21: Section 5
@@ -13,11 +14,15 @@ import GithubContext  from '../../context/github/githubContext';
 // const {showClear, clearUsers} = this.props -> now pushed to here: (props)
 
 // 20210721: Removing showClear and clearUsers
-const Search = ({setAlert}) => {
+const Search = () => {
     
     // 20210717: Initialise the context here
     // const { searchUser} = useContext(GithubContext)
     const githubContext = useContext(GithubContext)
+    const alertContext = useContext(AlertContext)
+    
+    const {setAlert} = alertContext
+    
     // 20210716: We destructure the text to be used by useState
     const [text, setText] = useState('')
 

@@ -9,7 +9,8 @@ import About from './components/pages/About.js';
 import User from './components/users/User.js';
 // import axios from 'axios';
 
-import GithubState from './context/github/githubState'
+import GithubState from './context/github/githubState.js'
+import AlertState from './context/alert/alertState.js'
 /**
  * 2021-07-21: Section 5
  * Refactoring from Class to Component for useState
@@ -24,7 +25,7 @@ const App = () =>{
   // let [user, setUser] = useState([])
   // let [repos, setRepos] = useState([])
   // let [loading, setLoading] = useState(false)
-  let [alert, setAlert] = useState(null)
+  // let [alert, setAlert] = useState(null)
 
   /**
    * Lesson 1: Render returns the output
@@ -60,7 +61,7 @@ const App = () =>{
   //   this.setState({users:res.data, loading: false})
   // }
    
-  const foo = ()=> 'bar';
+  // const foo = ()=> 'bar';
 
   // 2. If you search, this will display the new ones
   //  Serching the users.
@@ -142,15 +143,16 @@ const App = () =>{
   // }
 
   // Set Alert
-  const showAlert= (msg,type)=>{
-    // this.setState({alert:{msg,type}})
-    setAlert({msg,type});
+  // 20210721 - Alert as context
+  // const showAlert= (msg,type)=>{
+  //   // this.setState({alert:{msg,type}})
+  //   setAlert({msg,type});
     
-    // When setting timeout, null or zero everything else
-    setTimeout(() => {
-      setAlert(null);
-    }, 5000);
-  }
+  //   // When setting timeout, null or zero everything else
+  //   setTimeout(() => {
+  //     setAlert(null);
+  //   }, 5000);
+  // }
 
   // Lesson 9 and above
   // Commented on the 13th Mar 2021
@@ -194,62 +196,63 @@ const App = () =>{
   return(
     // Lesson 21: Route and Router
     <GithubState>
-      <Router>
-      <div className="App">
-        {/* Send the title for the component */}
-        <NavBar title="Github Finder" icon='fab fa-github'/>
-        {/* <UserItem /> */}
-        <div className="container">
-          {/* Alert statement above */}
-          {/* this.state.alert -> since you've setState, 
-              no need to use the this.state -> removed */}
-          <Alert alert={alert}/>
-          <Switch>
-            {/* The first page aka the main page */}
-            <Route exact path='/' render={props=>(
-              <Fragment>
-                {/* 20210721 - Remove the clearUsers and showClear */}
-                <Search 
-                  // clearUsers={clearUsers}
-                  // showClear={users.length > 0 ? true:false}
-                  setAlert={showAlert}
-                />
-                <Users/>
-              </Fragment>
-            )} />
-            {/* Creating the second Route aka the second page */}
-            <Route exact path='/about' component={
-              About
-            } />
-            {/* Using props here, because we have things to pass in. 
-                About is a component, so we can use the component element */}
-            {/* Spread operators will iterate through the array */}
-            {/* Login will be passed to know the users */}
-            {/* <Route exact path='/user/:login' render={props=>(
-              // 20210721: getUser and user is from Context
-              <User {...props}
-                // getUser={getUser}
-                // user={user}
-                // getUserRepos={getUserRepos}
-                // repos={repos}
-              />
-              )} /> */}
-              {/* Since we removed everything: Just use component only */}
-              <Route exact path='/user/:login' component={User} />
+      <AlertState>
+        <Router>
+          <div className="App">
+            {/* Send the title for the component */}
+            <NavBar title="Github Finder" icon='fab fa-github'/>
+            {/* <UserItem /> */}
+            <div className="container">
+              {/* Alert statement above */}
+              {/* this.state.alert -> since you've setState, 
+                  no need to use the this.state -> removed */}
+              <Alert/>
+              <Switch>
+                {/* The first page aka the main page */}
+                <Route exact path='/' render={props=>(
+                  <Fragment>
+                    {/* 20210721 - Remove the clearUsers and showClear */}
+                    {/* 20210721 - Remove showAlert */}
+                    <Search 
+                      // clearUsers={clearUsers}
+                      // showClear={users.length > 0 ? true:false}
+                      // setAlert={showAlert}
+                    />
+                    <Users/>
+                  </Fragment>
+                )} />
+                {/* Creating the second Route aka the second page */}
+                <Route exact path='/about' component={About} />
+                {/* Using props here, because we have things to pass in. 
+                    About is a component, so we can use the component element */}
+                {/* Spread operators will iterate through the array */}
+                {/* Login will be passed to know the users */}
+                {/* <Route exact path='/user/:login' render={props=>(
+                  // 20210721: getUser and user is from Context
+                  <User {...props}
+                    // getUser={getUser}
+                    // user={user}
+                    // getUserRepos={getUserRepos}
+                    // repos={repos}
+                  />
+                  )} /> */}
+                  {/* Since we removed everything: Just use component only */}
+                  <Route exact path='/user/:login' component={User} />
 
-          </Switch>
-          {/* You must always put in the eclared functions/props for it to work */}
-          {/* Lesson 21: Moving Search and Users to the fragment */}
-          {/* <Search 
-            searchUser={this.searchUser}
-            clearUsers={this.clearUsers}
-            showClear={users.length > 0 ? true:false}
-            setAlert={this.setAlert}
-          /> */}
-          {/* <Users loading={loading} users={users}/> */}
-        </div>
-      </div>
-    </Router>
+              </Switch>
+              {/* You must always put in the eclared functions/props for it to work */}
+              {/* Lesson 21: Moving Search and Users to the fragment */}
+              {/* <Search 
+                searchUser={this.searchUser}
+                clearUsers={this.clearUsers}
+                showClear={users.length > 0 ? true:false}
+                setAlert={this.setAlert}
+              /> */}
+              {/* <Users loading={loading} users={users}/> */}
+            </div>
+          </div>
+        </Router>
+      </AlertState>
     </GithubState>
   )
   // }

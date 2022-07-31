@@ -7,7 +7,7 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.0",
     "axios": "^0.21.1",
-    "netlify-cli": "^5.2.0",
+    "netlify-cli": "^8.18.1",
     "nodemon": "^2.0.12",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
